@@ -1,3 +1,3 @@
-##super admin account
-###email: sabrina@gmail.com
-###password: sabrina1234
+## super admin account
+- email: sabrina@gmail.com
+- password: sabrina1234
