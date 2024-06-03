@@ -1,0 +1,329 @@
+openapi: 3.1.0
+info:
+  title: Car Rental API
+  description: API untuk layanan penyewaan mobil
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local server
+tags:
+  - name: Users
+    description: Endpoints terkait pengguna
+  - name: Cars
+    description: Endpoints terkait mobil
+paths:
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Mendapatkan user berdasarkan token
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Token yang diperlukan untuk mendapatkan user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "your_jwt_token"
+      responses:
+        '200':
+          description: Berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      email:
+                        type: string
+        '401':
+          description: Tidak terotorisasi
+        '403':
+          description: Akses ditolak
+        '500':
+          description: Kesalahan server
+  /users/admin:
+    post:
+      tags:
+        - Users
+      summary: Membuat admin baru
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Admin berhasil dibuat
+        '400':
+          description: Kesalahan data input
+        '500':
+          description: Kesalahan server
+  /users/login:
+    post:
+      tags:
+        - Users
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login berhasil
+        '400':
+          description: Email atau password salah
+        '500':
+          description: Kesalahan server
+  /users/register:
+    post:
+      tags:
+        - Users
+      summary: Mendaftar user baru
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Pendaftaran berhasil
+        '400':
+          description: Kesalahan data input
+        '500':
+          description: Kesalahan server
+  /cars:
+    get:
+      tags:
+        - Cars
+      summary: Mendapatkan daftar mobil
+      responses:
+        '200':
+          description: Berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        plate:
+                          type: string
+                        manufacture:
+                          type: string
+                        model:
+                          type: string
+                        image:
+                          type: string
+                        rentPerDay:
+                          type: integer
+                        capacity:
+                          type: integer
+                        description:
+                          type: string
+                        availableAt:
+                          type: string
+                        transmission:
+                          type: string
+                        available:
+                          type: boolean
+                        type:
+                          type: string
+                        year:
+                          type: integer
+                        created_by:
+                          type: integer
+                        updated_by:
+                          type: integer
+        '500':
+          description: Kesalahan server
+    post:
+      tags:
+        - Cars
+      summary: Menambahkan mobil baru
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                plate:
+                  type: string
+                manufacture:
+                  type: string
+                model:
+                  type: string
+                image:
+                  type: string
+                rentPerDay:
+                  type: integer
+                capacity:
+                  type: integer
+                description:
+                  type: string
+                availableAt:
+                  type: string
+                transmission:
+                  type: string
+                available:
+                  type: boolean
+                type:
+                  type: string
+                year:
+                  type: integer
+                created_by:
+                  type: integer
+                updated_by:
+                  type: integer
+      responses:
+        '200':
+          description: Berhasil menambahkan mobil
+        '401':
+          description: Tidak terotorisasi
+        '403':
+          description: Akses ditolak
+        '500':
+          description: Kesalahan server
+  /cars/{id}:
+    put:
+      tags:
+        - Cars
+      summary: Mengedit data mobil
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                plate:
+                  type: string
+                manufacture:
+                  type: string
+                model:
+                  type: string
+                image:
+                  type: string
+                rentPerDay:
+                  type: integer
+                capacity:
+                  type: integer
+                description:
+                  type: string
+                availableAt:
+                  type: string
+                transmission:
+                  type: string
+                available:
+                  type: boolean
+                type:
+                  type: string
+                year:
+                  type: integer
+                created_by:
+                  type: integer
+                updated_by:
+                  type: integer
+      responses:
+        '200':
+          description: Berhasil mengedit mobil
+        '400':
+          description: Kesalahan data input
+        '401':
+          description: Tidak terotorisasi
+        '403':
+          description: Akses ditolak
+        '500':
+          description: Kesalahan server
+    delete:
+      tags:
+        - Cars
+      summary: Menghapus mobil
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Berhasil menghapus mobil
+        '404':
+          description: Mobil tidak ditemukan
+        '401':
+          description: Tidak terotorisasi
+        '403':
+          description: Akses ditolak
+        '500':
+          description: Kesalahan server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

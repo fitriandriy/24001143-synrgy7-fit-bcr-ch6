@@ -85,7 +85,12 @@ const getUserByToken = async (req:Request, res:Response) => {
       res.status(200).json({
         status: true,
         message: 'success',
-        data: user
+        data: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          user_type: user.user_type
+        }
       })
     }
   } catch (error) {
