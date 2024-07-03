@@ -1,5 +1,6 @@
 import { Model, ModelObject } from "objection";
 import { CarsModel } from "./car.model";
+import { OrdersModel } from "./order.model";
 
 export class UsersModel extends Model {
   id!: string;
@@ -28,6 +29,14 @@ export class UsersModel extends Model {
         join: {
           from: 'users.id',
           to: 'cars.updated_by'
+        }
+      },
+      user_email: {
+        relation: Model.HasManyRelation,
+        modelClass: OrdersModel,
+        join: {
+          from: 'users.email',
+          to: 'orders.user_email'
         }
       },
     }

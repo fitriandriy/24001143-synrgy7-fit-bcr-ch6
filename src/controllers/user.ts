@@ -57,18 +57,21 @@ const login = async (req: Request, res: Response) => {
     const result = await loginServices(email, password)
 
     if (result !== false) {
+      console.log(`TOKEN ${result.token}`)
       res.status(200).json({
         status: true,
         message: 'success',
         token: result.token
       })
     } else {
+      console.log('Email or password incorrect!')
       res.status(400).json({
         status: false,
         message: 'email or password incorrect'
       })
     }
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       status: false,
       message: error
